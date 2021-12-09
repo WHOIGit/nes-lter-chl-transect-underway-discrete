@@ -1,0 +1,3 @@
+[submodule "nes-lter-chla-post-calibration"]
+	path = nes-lter-chla-post-calibration
+	url = https://github.com/amandaherbst/nes-lter-chla-post-calibration.git
