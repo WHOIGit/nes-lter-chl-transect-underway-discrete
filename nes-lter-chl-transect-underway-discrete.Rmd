@@ -1,0 +1,19 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+library(dplyr)
+library(readr)
+library(here)
+library(glue)
+
+data_dir <- here('nes-lter-chla-post-calibration')
+
+post_cal_fluo <- merge_csv_directory(glue('{data_dir}/post-cal-fluo'))
+uw_discrete_cont_match <- merge_csv_directory(glue('{data_dir}/uw_discrete_cont_match'))
+```
+
+
