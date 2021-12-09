@@ -234,3 +234,9 @@ read_from_api <- function(type, cruises) {
 # cruises <- c("en608","en617", "en627")
 # ctd_metadata <- read_from_api(type = "metadata", cruises = cruises)
 
+merge_csv_directory <- function(dir) {
+  return(list.files(path=dir, full.names = TRUE) %>% 
+    lapply(read_csv) %>% 
+    bind_rows)
+}
+
