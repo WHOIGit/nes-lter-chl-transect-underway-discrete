@@ -9,11 +9,36 @@ library(dplyr)
 library(readr)
 library(here)
 library(glue)
+library(readxl)
 
+library(EMLassemblyline)
+```
+
+```{r}
 data_dir <- here('nes-lter-chla-post-calibration')
 
 post_cal_fluo <- merge_csv_directory(glue('{data_dir}/post-cal-fluo'))
 uw_discrete_cont_match <- merge_csv_directory(glue('{data_dir}/uw_discrete_cont_match'))
+
+output_dir <- here('output')
+
+write.csv(post_cal_fluo, glue('{output_dir}/post-cal-fluo.csv'))
+write.csv(uw_discrete_cont_match, glue('{output_dir}/uw_discrete_cont_match.csv'))
 ```
+
+```{r}
+# define input files
+edi_filename <- "chl-transect-underway"
+metadata <- glue('{edi_filename}-info')
+pkg_id <- "knb-lter-nes.999.1" # dummy package ID for development
+
+# Make EML Templates 
+excel_to_template(metadata_path = metadata, 
+                  edi_filename = edi_filename, 
+                  rights = "CC0",
+                  other_info = TRUE)
+
+```
+
 
 
