@@ -6,47 +6,41 @@
 # read in metadata info and import additional templates
 # write info data frames to text files for EML assembly
 
-xlsx_to_template <- function(metadata.path, edi.filename, rights, bbox = FALSE, other.info = FALSE) {
-  # define the file type for the metadata
-  metadata_xlsx <- paste0(metadata.path, ".xlsx")
-  
-  if ("ColumnHeaders" %in% excel_sheets(path = metadata_xlsx)) {
-    headers <- read_excel(path = metadata_xlsx, 
-                          sheet = "ColumnHeaders", na = "NA")
-    write.table(headers, paste0("attributes_", edi.filename, ".txt"), 
-                quote = FALSE, na = "", sep = "\t", row.names = FALSE)
-  }
-  if ("Personnel" %in% excel_sheets(path = metadata_xlsx)) {
-    personnel <- read_excel(path = metadata_xlsx, 
-                            sheet = "Personnel", na = "NA")
-    write.table(personnel,"personnel.txt", 
-            quote = FALSE, na = "", sep = "\t", row.names = FALSE)
-  }
-  if ("Keywords" %in% excel_sheets(path = metadata_xlsx)) {
-    keywords <- read_excel(path = metadata_xlsx, 
-                          sheet = "Keywords", na = "NA")
-    write.table(keywords,"keywords.txt", 
-                quote = FALSE, na = "", sep = "\t", row.names = FALSE)
-  }
-  if ("CategoricalVariables" %in% excel_sheets(path = metadata_xlsx)) {
-    catvars <- read_excel(path = metadata_xlsx, 
-                          sheet = "CategoricalVariables", na = "NA")
-    write.table(catvars, paste0("catvars_", edi.filename, ".txt"), 
-                quote = FALSE, na = "", sep = "\t", row.names = FALSE)
-  }
-  if ("CustomUnits" %in% excel_sheets(path = metadata_xlsx)) {
-    custom_units <- read_excel(path = metadata_xlsx,
-                               sheet = "CustomUnits", na = "NA")
-    write.table(custom_units,"custom_units.txt", 
-                quote = FALSE, na = "", sep = "\t", row.names = FALSE)
-  }
-  # Import abstract and methods
-  template_core_metadata(path = getwd(), license = rights)
-  # this will not overwrite existing files
+library(glue)
 
-  # if theres is no additional information (default), eliminate the template
-  if(isFALSE(other.info)) {
-    unlink("additional_info.txt")
+table_to_tsv <- function(table, output.path) {
+  write.table(table, output.path, quote=FALSE, na="", sep="\t", row.names=FALSE)
+}
+
+read_sheet <- function(excel.path, sheet.name) {
+  return(read_excel(path=excel.path, sheet=sheet.name, na="NA"))
+}
+
+sheet_to_tsv <- function(excel.path, sheet.name, output.path) {
+  if (sheet.name %in% excel_sheets(path=excel.path)) {
+    table <- read_sheet(excel.path, sheet.name)
+    table_to_tsv(table, output.path)
+  }
+}
+
+excel_to_template <- function(metadata_path, edi_filename, rights, bbox=FALSE, other_info=FALSE) {
+  # FIXME use an output directory rather than writing everything to the root directory
+
+  excel_path = glue('{metadata_path}.xlsx')
+  
+  sheet_to_tsv(excel_path, 'ColumnHeaders', glue('attributes_{edi_filename}.txt'))
+  sheet_to_tsv(excel_path, 'Personnel', 'personnel.txt')
+  sheet_to_tsv(excel_path, 'Keywords', 'keywords.txt')
+  sheet_to_tsv(excel_path, 'CategoricalVariables', glue('catvars_{edi_filename}.txt'))
+  sheet_to_tsv(excel_path, 'CustomUnits', 'custom_units.txt')
+  
+  # import abstract and methods
+  template_core_metadata(path=here(), license=rights)
+  # this will not overwrite existing files
+  
+  # if there is no additional information (default), eliminate the template
+  if(isFALSE(other_info)) {
+    unlink(here("additional_info.txt"))
   }
 }
 
