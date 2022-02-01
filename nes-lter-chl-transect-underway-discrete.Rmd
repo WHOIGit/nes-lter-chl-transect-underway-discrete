@@ -10,20 +10,68 @@ library(readr)
 library(here)
 library(glue)
 library(readxl)
+library(xml2)
 
+library(EML)
 library(EMLassemblyline)
+library(ediutilities)
 ```
 
 ```{r}
 data_dir <- here('nes-lter-chla-post-calibration')
 
 post_cal_fluo <- merge_csv_directory(glue('{data_dir}/post-cal-fluo'))
+post_cal_fluo$fluorescence_manufacturer_cal <- NULL
+
 uw_discrete_cont_match <- merge_csv_directory(glue('{data_dir}/uw_discrete_cont_match'))
 
-output_dir <- here('output')
+output_dir <- here('data_tables')
+dir.create(output_dir)
 
-write.csv(post_cal_fluo, glue('{output_dir}/post-cal-fluo.csv'))
-write.csv(uw_discrete_cont_match, glue('{output_dir}/uw_discrete_cont_match.csv'))
+write.csv(post_cal_fluo, glue('{output_dir}/chl-transect-underway-post-cal.csv'), row.names=FALSE)
+write.csv(uw_discrete_cont_match, glue('{output_dir}/chl-transect-underway-discrete.csv', row.names=FALSE))
+```
+```{r}
+
+table_to_tsv <- function(table, output.path) {
+  utils::write.table(table, output.path, quote=FALSE, na="", sep="\t", row.names=FALSE)
+}
+
+read_sheet <- function(excel.path, sheet.name) {
+  return(readxl::read_excel(path=excel.path, sheet=sheet.name, na="NA"))
+}
+
+sheet_to_tsv <- function(excel.path, sheet.name, output.path) {
+  if (sheet.name %in% readxl::excel_sheets(path=excel.path)) {
+    table <- read_sheet(excel.path, sheet.name)
+    table_to_tsv(table, output.path)
+  }
+}
+
+#' takes user-provided Excel template and converts to formats needed by
+#' the EML assembly line
+#' @export
+excel_to_template <- function(metadata_path, edi_filename, rights, bbox=FALSE, other_info=FALSE, output_dir=here::here()) {
+  # FIXME use an output directory rather than writing everything to the root directory
+
+  excel_path = glue::glue('{metadata_path}.xlsx')
+
+  sheet_to_tsv(excel_path, 'ColumnHeaders', glue::glue('attributes_{edi_filename}.txt'))
+  sheet_to_tsv(excel_path, 'Personnel', 'personnel.txt')
+  sheet_to_tsv(excel_path, 'Keywords', 'keywords.txt')
+  sheet_to_tsv(excel_path, 'CategoricalVariables', glue::glue('catvars_{edi_filename}.txt'))
+  sheet_to_tsv(excel_path, 'CustomUnits', 'custom_units.txt')
+
+  # Import abstract and methods
+  EMLassemblyline::template_core_metadata(path = here::here(), license = rights)
+  # this will not overwrite existing files
+
+  # if there is no additional information (default), eliminate the template
+  # TODO determine if this is necessary
+  if(isFALSE(other_info)) {
+    unlink(here::here("additional_info.txt"))
+  }
+}
 ```
 
 ```{r}
@@ -38,7 +86,30 @@ excel_to_template(metadata_path = metadata,
                   rights = "CC0",
                   other_info = TRUE)
 
+sheet_to_tsv('chl-transect-underway-post-cal.xlsx', 'ColumnHeaders',
+             glue::glue('attributes_chl-transect-underway-post-cal.txt'))
+
+sheet_to_tsv('chl-transect-underway-info.xlsx', 'CategoricalVariables',
+             glue::glue('catvars_chl-transect-underway-post-cal.txt'))
+
+EMLassemblyline::template_core_metadata(path=here(), license='CC0')
 ```
+```{r}
 
+make_eml(path=here(),
+         data.path=output_dir,
+         dataset.title='This is a placeholder title',
+         data.table='chl-transect-underway-post-cal.csv',
+         data.table.description='This is a placeholder description',
+         data.table.name = 'This is a placeholder table name',
+         temporal.coverage = temporal_coverage(post_cal_fluo$date_time_utc),
+         geographic.description = "NES-LTER Transect",
+         geographic.coordinates = geographic_coordinates(post_cal_fluo$latitude, post_cal_fluo$longitude),
+         maintenance.description = "ongoing",
+         user.id = "NES",
+         user.domain = "LTER",
+         package.id = pkg_id)
 
+project_insert(pkg_id)
+```
 
