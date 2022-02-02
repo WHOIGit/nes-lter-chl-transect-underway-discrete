@@ -24,12 +24,15 @@ post_cal_fluo <- merge_csv_directory(glue('{data_dir}/post-cal-fluo'))
 post_cal_fluo$fluorescence_manufacturer_cal <- NULL
 
 uw_discrete_cont_match <- merge_csv_directory(glue('{data_dir}/uw_discrete_cont_match'))
+uw_discrete_cont_match$fluo_1_wetstar_match <- NULL
+uw_discrete_cont_match$fluo_2_ecofl_match <- NULL
+uw_discrete_cont_match$iode_quality_flag <- as.factor(uw_discrete_cont_match$iode_quality_flag)
 
 output_dir <- here('data_tables')
 dir.create(output_dir)
 
-write.csv(post_cal_fluo, glue('{output_dir}/chl-transect-underway-post-cal.csv'), row.names=FALSE)
-write.csv(uw_discrete_cont_match, glue('{output_dir}/chl-transect-underway-discrete.csv', row.names=FALSE))
+write_csv(post_cal_fluo, glue('{output_dir}/chl-transect-underway-post-cal.csv'))
+write_csv(uw_discrete_cont_match, glue('{output_dir}/chl-transect-underway-discrete.csv'))
 ```
 ```{r}
 
@@ -86,11 +89,17 @@ excel_to_template(metadata_path = metadata,
                   rights = "CC0",
                   other_info = TRUE)
 
+sheet_to_tsv('chl-transect-underway-info.xlsx', 'CategoricalVariables',
+             glue::glue('catvars_chl-transect-underway-post-cal.txt'))
+
+sheet_to_tsv('chl-transect-underway-info.xlsx', 'CategoricalVariables',
+             glue::glue('catvars_chl-transect-underway-discrete.txt'))
+
 sheet_to_tsv('chl-transect-underway-post-cal.xlsx', 'ColumnHeaders',
              glue::glue('attributes_chl-transect-underway-post-cal.txt'))
 
-sheet_to_tsv('chl-transect-underway-info.xlsx', 'CategoricalVariables',
-             glue::glue('catvars_chl-transect-underway-post-cal.txt'))
+sheet_to_tsv('chl-transect-underway-discrete.xlsx', 'ColumnHeaders',
+             glue::glue('attributes_chl-transect-underway-discrete.txt'))
 
 EMLassemblyline::template_core_metadata(path=here(), license='CC0')
 ```
@@ -99,9 +108,12 @@ EMLassemblyline::template_core_metadata(path=here(), license='CC0')
 make_eml(path=here(),
          data.path=output_dir,
          dataset.title='This is a placeholder title',
-         data.table='chl-transect-underway-post-cal.csv',
-         data.table.description='This is a placeholder description',
-         data.table.name = 'This is a placeholder table name',
+         data.table=c('chl-transect-underway-post-cal.csv',
+                      'chl-transect-underway-discrete.csv'),
+         data.table.description=c('This is a placeholder description',
+                                  'This is a placeholder description 2'),
+         data.table.name = c('This is a placeholder table name',
+                             'This is a placeholder table name 2'),
          temporal.coverage = temporal_coverage(post_cal_fluo$date_time_utc),
          geographic.description = "NES-LTER Transect",
          geographic.coordinates = geographic_coordinates(post_cal_fluo$latitude, post_cal_fluo$longitude),
