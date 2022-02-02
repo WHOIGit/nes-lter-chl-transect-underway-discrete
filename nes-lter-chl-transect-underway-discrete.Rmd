@@ -108,10 +108,6 @@ EMLassemblyline::template_core_metadata(path=here(), license='CC0')
 temp_coverage <- temporal_coverage(append(post_cal_fluo$date_time_utc,
                                           uw_discrete_cont_match$date_time_utc))
 
-geo_coordinates <- geographic_coordinates(append(post_cal_fluo$latitude,
-                                                 uw_discrete_cont_match$latitude),
-                                          append(post_cal_fluo$longitude,
-                                                 uw_discrete_cont_match$longitude))
 make_eml(path=here(),
          data.path=output_dir,
          dataset.title='This is a placeholder title',
@@ -123,7 +119,11 @@ make_eml(path=here(),
                              'This is a placeholder table name 2'),
          temporal.coverage = temp_coverage,
          geographic.description = "NES-LTER Transect",
-         geographic.coordinates = geo_coordinates,
+         geographic.coordinates =
+           geographic_coordinates(append(post_cal_fluo$latitude,
+                                         uw_discrete_cont_match$latitude),
+                                  append(post_cal_fluo$longitude,
+                                         uw_discrete_cont_match$longitude)),
          maintenance.description = "ongoing",
          user.id = "NES",
          user.domain = "LTER",
