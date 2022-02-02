@@ -31,8 +31,8 @@ uw_discrete_cont_match$iode_quality_flag <- as.factor(uw_discrete_cont_match$iod
 output_dir <- here('data_tables')
 dir.create(output_dir)
 
-write_csv(post_cal_fluo, glue('{output_dir}/chl-transect-underway-post-cal.csv'))
-write_csv(uw_discrete_cont_match, glue('{output_dir}/chl-transect-underway-discrete.csv'))
+write_csv(post_cal_fluo, glue('{output_dir}/chl-transect-underway-post-cal.csv'), na='NaN')
+write_csv(uw_discrete_cont_match, glue('{output_dir}/chl-transect-underway-discrete.csv'), na='NaN')
 ```
 ```{r}
 
@@ -105,6 +105,13 @@ EMLassemblyline::template_core_metadata(path=here(), license='CC0')
 ```
 ```{r}
 
+temp_coverage <- temporal_coverage(append(post_cal_fluo$date_time_utc,
+                                          uw_discrete_cont_match$date_time_utc))
+
+geo_coordinates <- geographic_coordinates(append(post_cal_fluo$latitude,
+                                                 uw_discrete_cont_match$latitude),
+                                          append(post_cal_fluo$longitude,
+                                                 uw_discrete_cont_match$longitude))
 make_eml(path=here(),
          data.path=output_dir,
          dataset.title='This is a placeholder title',
@@ -114,9 +121,9 @@ make_eml(path=here(),
                                   'This is a placeholder description 2'),
          data.table.name = c('This is a placeholder table name',
                              'This is a placeholder table name 2'),
-         temporal.coverage = temporal_coverage(post_cal_fluo$date_time_utc),
+         temporal.coverage = temp_coverage,
          geographic.description = "NES-LTER Transect",
-         geographic.coordinates = geographic_coordinates(post_cal_fluo$latitude, post_cal_fluo$longitude),
+         geographic.coordinates = geo_coordinates,
          maintenance.description = "ongoing",
          user.id = "NES",
          user.domain = "LTER",
