@@ -11,6 +11,7 @@ library(here)
 library(glue)
 library(readxl)
 library(xml2)
+library(rlog)
 
 library(EML)
 library(EMLassemblyline)
@@ -34,48 +35,6 @@ dir.create(output_dir)
 write_csv(post_cal_fluo, glue('{output_dir}/chl-transect-underway-post-cal.csv'), na='NaN')
 write_csv(uw_discrete_cont_match, glue('{output_dir}/chl-transect-underway-discrete.csv'), na='NaN')
 ```
-```{r}
-
-table_to_tsv <- function(table, output.path) {
-  utils::write.table(table, output.path, quote=FALSE, na="", sep="\t", row.names=FALSE)
-}
-
-read_sheet <- function(excel.path, sheet.name) {
-  return(readxl::read_excel(path=excel.path, sheet=sheet.name, na="NA"))
-}
-
-sheet_to_tsv <- function(excel.path, sheet.name, output.path) {
-  if (sheet.name %in% readxl::excel_sheets(path=excel.path)) {
-    table <- read_sheet(excel.path, sheet.name)
-    table_to_tsv(table, output.path)
-  }
-}
-
-#' takes user-provided Excel template and converts to formats needed by
-#' the EML assembly line
-#' @export
-excel_to_template <- function(metadata_path, edi_filename, rights, bbox=FALSE, other_info=FALSE, output_dir=here::here()) {
-  # FIXME use an output directory rather than writing everything to the root directory
-
-  excel_path = glue::glue('{metadata_path}.xlsx')
-
-  sheet_to_tsv(excel_path, 'ColumnHeaders', glue::glue('attributes_{edi_filename}.txt'))
-  sheet_to_tsv(excel_path, 'Personnel', 'personnel.txt')
-  sheet_to_tsv(excel_path, 'Keywords', 'keywords.txt')
-  sheet_to_tsv(excel_path, 'CategoricalVariables', glue::glue('catvars_{edi_filename}.txt'))
-  sheet_to_tsv(excel_path, 'CustomUnits', 'custom_units.txt')
-
-  # Import abstract and methods
-  EMLassemblyline::template_core_metadata(path = here::here(), license = rights)
-  # this will not overwrite existing files
-
-  # if there is no additional information (default), eliminate the template
-  # TODO determine if this is necessary
-  if(isFALSE(other_info)) {
-    unlink(here::here("additional_info.txt"))
-  }
-}
-```
 
 ```{r}
 # define input files
@@ -86,7 +45,7 @@ pkg_id <- "knb-lter-nes.999.1" # dummy package ID for development
 # Make EML Templates 
 excel_to_template(metadata_path = metadata, 
                   edi_filename = edi_filename, 
-                  rights = "CC0",
+                  rights = "CCBY",
                   other_info = TRUE)
 
 sheet_to_tsv('chl-transect-underway-info.xlsx', 'CategoricalVariables',
@@ -101,16 +60,18 @@ sheet_to_tsv('chl-transect-underway-post-cal.xlsx', 'ColumnHeaders',
 sheet_to_tsv('chl-transect-underway-discrete.xlsx', 'ColumnHeaders',
              glue::glue('attributes_chl-transect-underway-discrete.txt'))
 
-EMLassemblyline::template_core_metadata(path=here(), license='CC0')
+EMLassemblyline::template_core_metadata(path=here(), license='CCBY')
 ```
 ```{r}
 
 temp_coverage <- temporal_coverage(append(post_cal_fluo$date_time_utc,
                                           uw_discrete_cont_match$date_time_utc))
 
+dataset_title = 'Underway discrete chlorophyll and post-calibrated underway fluorometer data during NES-LTER Transect cruises, ongoing since 2019'
+
 make_eml(path=here(),
          data.path=output_dir,
-         dataset.title='This is a placeholder title',
+         dataset.title=dataset_title,
          data.table=c('chl-transect-underway-post-cal.csv',
                       'chl-transect-underway-discrete.csv'),
          data.table.description=c('This is a placeholder description',
