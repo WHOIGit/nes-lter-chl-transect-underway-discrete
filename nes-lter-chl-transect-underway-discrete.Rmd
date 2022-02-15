@@ -23,6 +23,7 @@ data_dir <- here('nes-lter-chla-post-calibration')
 
 post_cal_fluo <- merge_csv_directory(glue('{data_dir}/post-cal-fluo'))
 post_cal_fluo$fluorescence_manufacturer_cal <- NULL
+post_cal_fluo$fluorescence_post_cal <- round(post_cal_fluo$fluorescence_post_cal, digits=2)
 
 uw_discrete_cont_match <- merge_csv_directory(glue('{data_dir}/uw_discrete_cont_match'))
 uw_discrete_cont_match$fluo_1_wetstar_match <- NULL
