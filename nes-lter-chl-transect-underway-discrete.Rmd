@@ -35,12 +35,15 @@ dir.create(output_dir)
 write_csv(post_cal_fluo, glue('{output_dir}/chl-transect-underway-post-cal.csv'), na='NaN')
 write_csv(uw_discrete_cont_match, glue('{output_dir}/chl-transect-underway-discrete.csv'), na='NaN')
 ```
+```{r}
+map_locs(uw_discrete_cont_match, region="transect")
+```
 
 ```{r}
 # define input files
 edi_filename <- "chl-transect-underway"
 metadata <- glue('{edi_filename}-info')
-pkg_id <- "knb-lter-nes.999.1" # dummy package ID for development
+pkg_id <- "knb-lter-nes.12.1"
 
 # Make EML Templates 
 excel_to_template(metadata_path = metadata, 
