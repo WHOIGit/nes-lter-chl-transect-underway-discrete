@@ -1,5 +1,7 @@
 ---
-title: "R Notebook"
+title: "EML assembly workflow for NES-LTER underway chlorophyll data"
+author: "Joe Futrelle"
+date: "February 2022"
 output: html_notebook
 ---
 
@@ -18,27 +20,53 @@ library(EMLassemblyline)
 library(ediutilities)
 ```
 
+[something about the package itself here]
+
+Data is provided in a git submodule. When cloning this repository, use this
+command or equivalent, replacing ... with this repository's URL:
+
+git clone --recurse-submodules ...
+
+Data assembly:
+
 ```{r}
+# location of submodule containing data tables
 data_dir <- here('nes-lter-chla-post-calibration')
 
+# assemble union table for post-cal fluorometer data
 post_cal_fluo <- merge_csv_directory(glue('{data_dir}/post-cal-fluo'))
+
+# remove columns that will not be published
 post_cal_fluo$fluorescence_manufacturer_cal <- NULL
+
+# round post-calibrated fluorometer values to two digits past the decimal
 post_cal_fluo$fluorescence_post_cal <- round(post_cal_fluo$fluorescence_post_cal, digits=2)
 
+# assemble union table for discrete data
 uw_discrete_cont_match <- merge_csv_directory(glue('{data_dir}/uw_discrete_cont_match'))
+
+# remove columns that will not be published
 uw_discrete_cont_match$fluo_1_wetstar_match <- NULL
 uw_discrete_cont_match$fluo_2_ecofl_match <- NULL
+
+# make the quality flag a factor
 uw_discrete_cont_match$iode_quality_flag <- as.factor(uw_discrete_cont_match$iode_quality_flag)
 
+# create an output directory for the merged, adjusted data tables
 output_dir <- here('data_tables')
 dir.create(output_dir)
 
+# write data to be published to CSV files used in the EML assembly workflow
 write_csv(post_cal_fluo, glue('{output_dir}/chl-transect-underway-post-cal.csv'), na='NaN')
 write_csv(uw_discrete_cont_match, glue('{output_dir}/chl-transect-underway-discrete.csv'), na='NaN')
 ```
+Plot discrete locations on a map
+
 ```{r}
 map_locs(uw_discrete_cont_match, region="transect")
 ```
+
+Assemble EML metadata templates based on the provided Excel template
 
 ```{r}
 # define input files
@@ -66,6 +94,8 @@ sheet_to_tsv('chl-transect-underway-discrete.xlsx', 'ColumnHeaders',
 
 EMLassemblyline::template_core_metadata(path=here(), license='CCBY')
 ```
+Compute spatiotemporal coverage and generate EML
+
 ```{r}
 
 temp_coverage <- temporal_coverage(append(post_cal_fluo$date_time_utc,
@@ -94,6 +124,7 @@ make_eml(path=here(),
          user.domain = "LTER",
          package.id = pkg_id)
 
+# insert parent project node
 project_insert(pkg_id)
 ```
 
