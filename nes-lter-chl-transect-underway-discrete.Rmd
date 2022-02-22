@@ -14,6 +14,7 @@ library(glue)
 library(readxl)
 library(xml2)
 library(rlog)
+library(ggplot2)
 
 library(EML)
 library(EMLassemblyline)
@@ -120,10 +121,10 @@ make_eml(path=here(),
          dataset.title=dataset_title,
          data.table=c('chl-transect-underway-discrete.csv',
                       'chl-transect-underway-post-cal.csv'),
-         data.table.description=c('This is a placeholder description',
-                                  'This is a placeholder description 2'),
-         data.table.name = c('This is a placeholder table name',
-                             'This is a placeholder table name 2'),
+         data.table.description=c('Underway discrete chlorophyll data during NES-LTER Transect cruises',
+                                  'Post-calibrated underway fluorometer data during NES-LTER Transect cruises'),
+         data.table.name = c('NES-LTER underway discrete chlorophyll data',
+                             'NES-LTER post-calibrated underway fluorometer data'),
          temporal.coverage = temp_coverage,
          geographic.description = "NES-LTER Transect",
          geographic.coordinates =
