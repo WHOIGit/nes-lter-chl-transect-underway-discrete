@@ -65,6 +65,18 @@ Plot discrete locations on a map
 ```{r}
 map_locs(uw_discrete_cont_match, region="transect")
 ```
+```{r}
+# plot the data distributions by quality flag
+
+p <- ggplot(post_cal_fluo, aes(x=as.factor(iode_quality_flag), y=fluorescence_post_cal)) + 
+   geom_boxplot() + xlab('iode_quality_flag')
+p
+```
+```{r}
+p <- ggplot(uw_discrete_cont_match, aes(x=as.factor(iode_quality_flag), y=chl)) + 
+   geom_boxplot() + xlab('iode_quality_flag')
+p
+```
 
 Assemble EML metadata templates based on the provided Excel template
 
