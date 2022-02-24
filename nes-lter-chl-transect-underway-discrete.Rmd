@@ -52,6 +52,7 @@ uw_discrete_cont_match$fluo_2_ecofl_match <- NULL
 
 # make the quality flag a factor
 uw_discrete_cont_match$iode_quality_flag <- as.factor(uw_discrete_cont_match$iode_quality_flag)
+post_cal_fluo$iode_quality_flag <- as.factor(post_cal_fluo$iode_quality_flag)
 
 # create an output directory for the merged, adjusted data tables
 output_dir <- here('data_tables')
