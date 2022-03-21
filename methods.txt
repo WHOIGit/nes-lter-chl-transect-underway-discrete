@@ -23,4 +23,4 @@ Holm-Hansen, O., Amos, A., Hewes, C., 2000. Reliability of estimating chlorophyl
 Marra, J., 1997. Analysis of diel variability in chlorophyll fluorescence. Journal of Marine Research. 55(4), 767-784. https://doi.org/10.1357/0022240973224274 
 Marrec, P., McNair, H., Franzè, G., Morison, F., Strock, J.P., Menden‐Deuer, S., 2021. Seasonal variability in planktonic food web structure and function of the Northeast U.S. Shelf. Limnol. Oceanogr. 66, 1440–1458. https://doi.org/10.1002/lno.11696
 Wasmund, N., Topp, I., Schories, D., 2006. Optimising the storage and extraction of chlorophyll samples. Oceanologia, 48(1), 125-144.
-Xing et al., 2012.
+Xing et al., 2012. Quenching correction for in vivo chlorophyll fluorescence acquired by autonomous platforms: A case study with instrumented elephant seals in the Kerguelen region (Southern Ocean). Limnology and Oceanography: Methods, 10(7), 483-495.
