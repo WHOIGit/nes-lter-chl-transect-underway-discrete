@@ -47,8 +47,8 @@ post_cal_fluo$fluorescence_post_cal <- round(post_cal_fluo$fluorescence_post_cal
 uw_discrete_cont_match <- merge_csv_directory(glue('{data_dir}/uw_discrete_cont_match'))
 
 # remove columns that will not be published
-uw_discrete_cont_match$fluo_1_wetstar_match <- NULL
-uw_discrete_cont_match$fluo_2_ecofl_match <- NULL
+uw_discrete_cont_match$fluo1_wetstar_match <- NULL
+uw_discrete_cont_match$fluo2_ecofl_match <- NULL
 
 # make the quality flag a factor
 uw_discrete_cont_match$iode_quality_flag <- as.factor(uw_discrete_cont_match$iode_quality_flag)
