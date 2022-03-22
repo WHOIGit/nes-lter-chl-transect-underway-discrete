@@ -1,0 +1,11 @@
+attributeName	attributeDefinition	class	unit	dateTimeFormatString	missingValueCode	missingValueCodeExplanation
+cruise	Identifier for research cruise generally including abbreviation for research vessel and voyage number	character				
+date_time_utc	Date and time in UTC	Date		YYYY-MM-DDThh:mm:ssZ	NaN	Missing value
+latitude	Ships latitude	numeric	degree		NaN	Missing value
+longitude	Ships longitude	numeric	degree		NaN	Missing value
+depth	Depth of underway seawater intake below sea surface	numeric	meter		NaN	Missing value
+replicate	Lowercase letter indicating replicate subsample	character				
+filter_size	Size fraction with filter and when applicable prefilter in micrometers	categorical				
+chl	Concentration of chlorophyll a per unit volume of the water body http://vocab.nerc.ac.uk/collection/P01/current/CPHLZZXX/ corresponding to BCO-DMO chl_a SeaBASS Chl and CF mass_concentration_of_ chlorophyll_a_in_sea_water	numeric	microgramsPerLiter		NaN	Missing value
+phaeo	Concentration of phaeopigments per unit volume of the water body	numeric	microgramsPerLiter		NaN	Missing value
+iode_quality_flag	IODE Quality Flag primary level	categorical				
