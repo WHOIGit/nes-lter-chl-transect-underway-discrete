@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stmml="http://www.xml-cml.org/schema/stmml-1.2" packageId="knb-lter-nes.12.1" xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0/eml.xsd https://eml.ecoinformatics.org/eml-2.2.0/eml.xsd" system="edi">
+<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stmml="http://www.xml-cml.org/schema/stmml-1.2" packageId="knb-lter-nes.12.2" xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0/eml.xsd https://eml.ecoinformatics.org/eml-2.2.0/eml.xsd" system="edi">
   <access authSystem="https://pasta.edirepository.org/authentication" order="allowFirst" scope="document">
     <allow>
       <principal>uid=NES,o=LTER,dc=ecoinformatics,dc=org</principal>
@@ -49,9 +49,9 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0003-4537-5853</userId>
       <role>softwareDeveloper</role>
     </associatedParty>
-    <pubDate>2022-03-25</pubDate>
+    <pubDate>2023-04-04</pubDate>
     <abstract>
-      <para>The continuous underway fluorescence, induced by in vivo chlorophyll-a (Chl-a), of surface waters of the Northeast U.S. shelf is compared to discrete Chl-a samples for post-calibration, collected ship-board as part of the Northeast U.S. Shelf Long-Term Ecological Research (NES LTER). Chl-a values derived from the manufacturer-calibrated sensors (hereafter, “continuous fluorescence”) and collected continuously are often different from the precise Chl-a concentrations obtained from discrete, extracted samples. Moreover, underway fluorometers and manufacturer calibrations differ per cruise. Thus, post-calibration of the continuous fluorescence signals using discrete Chl-a measurements is essential to standardize and compare the high-resolution underway Chl-a data along cruise tracks. For six cruises aboard the R/V Endeavor between summer 2019 and summer 2021, 12 to 22 discrete samples were collected from the underway system to measure Chl-a concentrations. These discrete Chl-a concentrations were then compared, using simple linear regressions (Model I least square fit), to corresponding continuous fluorescence values recorded by the two independent fluorometers installed with the underway system. For each cruise a preferred fluorometer was identified based on the best fit of the linear regression between discrete Chl-a concentrations and continuous fluorescence values. The slope and the intercept of the linear regression were used to post-calibrate continuous fluorescence values into standardized and intercomparable Chl-a concentration. This data package includes a table for the underway discrete Chl-a values and a table for the 1-min post-calibrated continuous fluorescence values for the preferred underway fluorometer per cruise.&#13;
+      <para>The continuous underway fluorescence, induced by in vivo chlorophyll-a (Chl-a), of surface waters of the Northeast U.S. shelf is compared to discrete Chl-a samples for post-calibration, collected ship-board as part of the Northeast U.S. Shelf Long-Term Ecological Research (NES LTER). Chl-a values derived from the manufacturer-calibrated sensors (hereafter, “continuous fluorescence”) and collected continuously are often different from the precise Chl-a concentrations obtained from discrete, extracted samples. Moreover, underway fluorometers and manufacturer calibrations differ per cruise. Thus, post-calibration of the continuous fluorescence signals using discrete Chl-a measurements is essential to standardize and compare the high-resolution underway Chl-a data along cruise tracks. For six cruises aboard the R/V Endeavor between summer 2019 and summer 2021, 12 to 22 discrete samples were collected from the underway system to measure Chl-a concentrations. These discrete Chl-a concentrations were then compared, using simple linear regressions (Model I least square fit), to corresponding continuous fluorescence values recorded by the two independent fluorometers installed with the underway system. For each cruise a preferred fluorometer was identified based on the best fit of the linear regression between discrete Chl-a concentrations and continuous fluorescence values. The slope and the intercept of the linear regression were used to post-calibrate continuous fluorescence values into standardized and intercomparable Chl-a concentration. This data package includes a table for the underway discrete Chl-a values and a table for the 1-min post-calibrated continuous fluorescence values for the preferred underway fluorometer per cruise.
 </para>
     </abstract>
     <keywordSet>
@@ -139,7 +139,7 @@
           <para>Marra, J., 1997. Analysis of diel variability in chlorophyll fluorescence. Journal of Marine Research. 55(4), 767-784. https://doi.org/10.1357/0022240973224274</para>
           <para>Marrec, P., McNair, H., Franzè, G., Morison, F., Strock, J.P., Menden‐Deuer, S., 2021. Seasonal variability in planktonic food web structure and function of the Northeast U.S. Shelf. Limnol. Oceanogr. 66, 1440–1458. https://doi.org/10.1002/lno.11696</para>
           <para>Wasmund, N., Topp, I., Schories, D., 2006. Optimising the storage and extraction of chlorophyll samples. Oceanologia, 48(1), 125-144.</para>
-          <para>Xing et al., 2012. Quenching correction for in vivo chlorophyll fluorescence acquired by autonomous platforms: A case study with instrumented elephant seals in the Kerguelen region (Southern Ocean). Limnology and Oceanography: Methods, 10(7), 483-495.&#13;
+          <para>Xing et al., 2012. Quenching correction for in vivo chlorophyll fluorescence acquired by autonomous platforms: A case study with instrumented elephant seals in the Kerguelen region (Southern Ocean). Limnology and Oceanography: Methods, 10(7), 483-495.
 </para>
         </description>
       </methodStep>
@@ -704,4 +704,12 @@
       <numberOfRecords>42674</numberOfRecords>
     </dataTable>
   </dataset>
+  <additionalMetadata>
+    <metadata>
+      <emlEditor>
+        <app>EMLassemblyline</app>
+        <release>3.5.5</release>
+      </emlEditor>
+    </metadata>
+  </additionalMetadata>
 </eml:eml>
