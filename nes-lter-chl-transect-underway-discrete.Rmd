@@ -95,13 +95,12 @@ Assemble EML metadata templates based on the provided Excel template
 # define input files
 edi_filename <- "chl-transect-underway"
 metadata <- glue('{edi_filename}-info')
-pkg_id <- "knb-lter-nes.12.1"
+pkg_id <- "knb-lter-nes.12.2"
 
 # Make EML Templates 
 excel_to_template(metadata_path = metadata, 
                   edi_filename = edi_filename, 
-                  rights = "CCBY",
-                  other_info = TRUE)
+                  rights = "CCBY")
 
 sheet_to_tsv('chl-transect-underway-info.xlsx', 'CategoricalVariables',
              glue::glue('catvars_chl-transect-underway-post-cal.txt'))
